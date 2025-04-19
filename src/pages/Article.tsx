@@ -5,13 +5,12 @@ import { get } from "../services/api";
 import API_LINKS from "../constants/apiLinks";
 
 const Article = () => {
-  const { id } = useParams();
   const [article, setArticle] = useState<any>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     fetchArticle();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const params = useParams();
@@ -24,7 +23,6 @@ const Article = () => {
       };
       setArticle(response.data);
     } else {
-      setError("Article ID is missing");
     }
     setLoading(false);
   };
