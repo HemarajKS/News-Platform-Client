@@ -10,8 +10,10 @@ const Home = () => {
   const [categories, setCategories] = useState<any>([]);
   const [authors, setAuthors] = useState<any>([]);
   const [tags, setTags] = useState<any>([]);
-  const [filteredArticles, setFilteredArticles] = useState<any>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1); // Current page
+  const [pageSize] = useState(10); // Number of articles per page
+  const [totalPages, setTotalPages] = useState(1); // Total number of pages
 
   const [searchParams] = useSearchParams();
 
@@ -34,16 +36,24 @@ const Home = () => {
     if (tag) queryParams.append("tag", tag);
     if (articleType) queryParams.append("articleType", articleType);
 
-    fetchArticles(queryParams.toString());
+    setPage(1);
+    fetchArticles(queryParams.toString(), 1);
   }, [searchParams]);
 
-  const fetchArticles = async (query: string) => {
+  const fetchArticles = async (query: string, page: number) => {
     setLoading(true);
     const response = (await get(
-      `${API_LINKS.ARTICLES.GET_FILTERED}?${query}`
-    )) as { data: any[] };
-    setArticles(response.data);
-    setFilteredArticles(response.data);
+      `${API_LINKS.ARTICLES.GET_FILTERED}?${query}&page=${page}&pageSize=${pageSize}`
+    )) as { data: { articles: any[]; totalPages: number } };
+    if (page === 1) {
+      setArticles(response.data.articles); // Replace articles on the first page
+    } else {
+      setArticles((prevArticles: any) => [
+        ...prevArticles,
+        ...response.data.articles,
+      ]); // Append articles for subsequent pages
+    }
+    setTotalPages(response.data.totalPages); // Update total pages
     setLoading(false);
   };
 
@@ -68,11 +78,32 @@ const Home = () => {
     setTags(response.data);
   };
 
-  if (loading) {
-    <div className="flex justify-center items-center h-screen">
-      <p className="text-lg font-semibold">Loading articles...</p>
-    </div>;
+  if (loading && page === 1) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <p className="text-lg font-semibold">Loading articles...</p>
+      </div>
+    );
   }
+
+  const loadMoreArticles = () => {
+    if (page < totalPages) {
+      setPage((prevPage) => prevPage + 1);
+      const categoryId = searchParams.get("categoryId");
+      const authorId = searchParams.get("authorId");
+      const tag = searchParams.get("tag");
+      const articleType = searchParams.get("articleType");
+
+      const queryParams = new URLSearchParams();
+
+      if (categoryId) queryParams.append("category", categoryId);
+      if (authorId) queryParams.append("author", authorId);
+      if (tag) queryParams.append("tag", tag);
+      if (articleType) queryParams.append("articleType", articleType);
+
+      fetchArticles(queryParams.toString(), page + 1);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -87,6 +118,16 @@ const Home = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* <ArticleList articles={filteredArticles} /> */}
       </div>
+      {page < totalPages && (
+        <div className="flex justify-center mt-6">
+          <button
+            onClick={loadMoreArticles}
+            className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
+          >
+            Load More
+          </button>
+        </div>
+      )}
     </div>
   );
 };
