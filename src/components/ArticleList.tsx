@@ -20,7 +20,7 @@ const ArticleList: React.FC<{ articles: Article[] }> = ({ articles }) => {
     <div className="flex flex-col gap-4">
       {articles.map((article) => (
         <Link
-          to={`/${article.articleId}`}
+          to={`/article/${article.articleId}`}
           key={article.articleId}
           className="no-underline text-inherit"
         >
