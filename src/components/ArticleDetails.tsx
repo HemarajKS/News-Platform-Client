@@ -1,48 +1,63 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 
-const ArticleDetails = ({ match }) => {
-    const [article, setArticle] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const articleId = match.params.id;
+interface Article {
+  title: string;
+  subtitle: string;
+  hero: string;
+  description: string;
+  published: string;
+  author: {
+    authorName: string;
+  };
+  category: {
+    categoryName: string;
+  };
+  tags: string[];
+}
 
-    useEffect(() => {
-        const fetchArticle = async () => {
-            try {
-                const response = await fetch(`/api/articles/${articleId}`);
-                const data = await response.json();
-                if (data.status === 1) {
-                    setArticle(data.data);
-                }
-            } catch (error) {
-                console.error('Error fetching article:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
+const ArticleDetails: React.FC<{ article: Article }> = ({ article }) => {
+  return (
+    <div className="article-details max-w-6xl mx-auto p-6 bg-white shadow-md rounded-lg my-6">
+      <h1 className="article-title text-3xl font-bold text-gray-800 mb-4">
+        {article.title}
+      </h1>
 
-        fetchArticle();
-    }, [articleId]);
+      <img
+        className="article-hero w-full h-auto rounded-lg mb-6 aspect-[16/9] object-cover"
+        src={article.hero}
+        alt={article.title}
+      />
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (!article) {
-        return <div>Article not found.</div>;
-    }
-
-    return (
-        <div>
-            <h1>{article.title}</h1>
-            <h2>{article.Subtitle}</h2>
-            <img src={article.hero} alt={article.title} />
-            <div dangerouslySetInnerHTML={{ __html: article.description }} />
-            <p>Published on: {new Date(article.published).toLocaleDateString()}</p>
-            <p>Author: {article.author.authorName}</p>
-            <p>Category: {article.category.categoryName}</p>
-            <p>Tags: {article.tags.join(', ')}</p>
-        </div>
-    );
+      <h2 className="article-subtitle text-xl font-semibold text-gray-600 mb-4">
+        {article.subtitle}
+      </h2>
+      <div
+        className="article-description text-gray-700 leading-relaxed mb-6"
+        dangerouslySetInnerHTML={{ __html: article.description }}
+      />
+      <p className="article-published text-sm text-gray-500 mb-2">
+        Published on: {new Date(article.published).toLocaleDateString()}
+      </p>
+      <p className="article-author text-sm text-gray-500 mb-2">
+        Author:{" "}
+        <span className="font-medium text-gray-800">
+          {article.author.authorName}
+        </span>
+      </p>
+      <p className="article-category text-sm text-gray-500 mb-2">
+        Category:{" "}
+        <span className="font-medium text-gray-800">
+          {article.category.categoryName}
+        </span>
+      </p>
+      <p className="article-tags text-sm text-gray-500">
+        Tags:{" "}
+        <span className="font-medium text-gray-800">
+          {article.tags.join(", ")}
+        </span>
+      </p>
+    </div>
+  );
 };
 
 export default ArticleDetails;

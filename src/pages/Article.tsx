@@ -1,45 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import ArticleDetails from '../components/ArticleDetails';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import ArticleDetails from "../components/ArticleDetails";
+import { get } from "../services/api";
+import API_LINKS from "../constants/apiLinks";
 
 const Article = () => {
-    const { id } = useParams();
-    const [article, setArticle] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const { id } = useParams();
+  const [article, setArticle] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-    useEffect(() => {
-        const fetchArticle = async () => {
-            try {
-                const response = await fetch(`/api/articles/${id}`);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch article');
-                }
-                const data = await response.json();
-                setArticle(data.data);
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
+  useEffect(() => {
+    fetchArticle();
+  }, []);
 
-        fetchArticle();
-    }, [id]);
+  const params = useParams();
 
-    if (loading) {
-        return <div>Loading...</div>;
+  const fetchArticle = async () => {
+    setLoading(true);
+    if (params.id) {
+      const response = (await get(API_LINKS.ARTICLES.GET_EACH(params.id))) as {
+        data: any;
+      };
+      setArticle(response.data);
+    } else {
+      setError("Article ID is missing");
     }
+    setLoading(false);
+  };
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-    return (
-        <div>
-            {article && <ArticleDetails article={article} />}
-        </div>
-    );
+  return <div>{article && <ArticleDetails article={article} />}</div>;
 };
 
 export default Article;
