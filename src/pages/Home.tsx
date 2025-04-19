@@ -3,7 +3,7 @@ import ArticleList from "../components/ArticleList";
 import ArticleFilter from "../components/ArticleFilter";
 import { get } from "../services/api";
 import API_LINKS from "../constants/apiLinks";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const Home = () => {
   const [articles, setArticles] = useState<any>([]);
@@ -38,6 +38,7 @@ const Home = () => {
 
     setPage(1);
     fetchArticles(queryParams.toString(), 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const fetchArticles = async (query: string, page: number) => {
@@ -116,7 +117,7 @@ const Home = () => {
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {/* <ArticleList articles={filteredArticles} /> */}
+        <ArticleList articles={articles} />
       </div>
       {page < totalPages && (
         <div className="flex justify-center mt-6">
