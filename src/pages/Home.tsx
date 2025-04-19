@@ -13,7 +13,7 @@ const Home = () => {
   const [tags, setTags] = useState<any>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1); // Current page
-  const [pageSize] = useState(10); // Number of articles per page
+  const [pageSize] = useState(5); // Number of articles per page
   const [totalPages, setTotalPages] = useState(1); // Total number of pages
 
   const [searchParams] = useSearchParams();
@@ -120,7 +120,9 @@ const Home = () => {
       if (authorId) queryParams.append("author", authorId);
       if (tag) queryParams.append("tag", tag);
       if (articleType) queryParams.append("articleType", articleType);
-
+      setPage(1);
+      setArticles([]); // Clear articles before fetching
+      setTotalPages(1); // Reset total pages
       fetchArticles(queryParams.toString(), 1);
     });
   };
