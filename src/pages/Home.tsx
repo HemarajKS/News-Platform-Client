@@ -4,6 +4,7 @@ import ArticleFilter from "../components/ArticleFilter";
 import { get } from "../services/api";
 import API_LINKS from "../constants/apiLinks";
 import { useSearchParams } from "react-router-dom";
+import PullToRefresh from "react-pull-to-refresh";
 
 const Home = () => {
   const [articles, setArticles] = useState<any>([]);
@@ -106,30 +107,50 @@ const Home = () => {
     }
   };
 
+  const handleRefresh = () => {
+    return new Promise<void>((resolve) => {
+      const categoryId = searchParams.get("categoryId");
+      const authorId = searchParams.get("authorId");
+      const tag = searchParams.get("tag");
+      const articleType = searchParams.get("articleType");
+
+      const queryParams = new URLSearchParams();
+
+      if (categoryId) queryParams.append("category", categoryId);
+      if (authorId) queryParams.append("author", authorId);
+      if (tag) queryParams.append("tag", tag);
+      if (articleType) queryParams.append("articleType", articleType);
+
+      fetchArticles(queryParams.toString(), 1);
+    });
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-center mb-6">Articles</h1>
-      <div className="mb-6">
-        <ArticleFilter
-          categories={categories || []}
-          authors={authors || []}
-          tags={tags || []}
-        />
-      </div>
-      <div>
-        <ArticleList articles={articles} />
-      </div>
-      {page < totalPages && (
-        <div className="flex justify-center mt-6">
-          <button
-            onClick={loadMoreArticles}
-            className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
-          >
-            Load More
-          </button>
+    <PullToRefresh onRefresh={handleRefresh}>
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-2xl font-bold text-center mb-6">Articles</h1>
+        <div className="mb-6">
+          <ArticleFilter
+            categories={categories || []}
+            authors={authors || []}
+            tags={tags || []}
+          />
         </div>
-      )}
-    </div>
+        <div>
+          <ArticleList articles={articles} />
+        </div>
+        {page < totalPages && (
+          <div className="flex justify-center mt-6">
+            <button
+              onClick={loadMoreArticles}
+              className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
+            >
+              Load More
+            </button>
+          </div>
+        )}
+      </div>
+    </PullToRefresh>
   );
 };
 
