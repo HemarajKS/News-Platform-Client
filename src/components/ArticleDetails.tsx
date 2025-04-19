@@ -46,7 +46,7 @@ const ArticleDetails: React.FC<{ article: Article }> = ({ article }) => {
           <span className="mx-2 text-gray-400">|</span>
           <span className="text-gray-600">Author</span>
         </div>
-        <div className="absolute left-0 mt-2 w-64 p-4 bg-white border border-gray-300 shadow-lg rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        <div className="absolute scale-0 left-0 mt-2 w-64 p-4 bg-white border border-gray-300 shadow-lg rounded-lg opacity-0 group-hover:opacity-100  group-hover:scale-100 transition-opacity duration-300 z-10">
           <div className="flex items-center mb-3">
             <img
               src={article.author.authorImage}
@@ -68,7 +68,7 @@ const ArticleDetails: React.FC<{ article: Article }> = ({ article }) => {
       </h2>
       {article.articleType === "TEXT" && (
         <div
-          className="article-description text-gray-700 leading-relaxed mb-6"
+          className="article-description text-gray-700 leading-relaxed mb-6 custom-rte-styles"
           dangerouslySetInnerHTML={{ __html: article.description || "" }}
         />
       )}

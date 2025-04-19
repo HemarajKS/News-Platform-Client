@@ -1,3 +1,130 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Custom styles for RTE content */
+.custom-rte-styles h1,
+.custom-rte-styles h2,
+.custom-rte-styles h3 {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+.custom-rte-styles p {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.custom-rte-styles ul {
+  list-style-type: disc;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.custom-rte-styles ol {
+  list-style-type: decimal;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.custom-rte-styles a {
+  color: #2563eb; /* Tailwind blue-600 */
+  text-decoration: underline;
+}
+
+.custom-rte-styles img {
+  max-width: 100%;
+  height: auto;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+}
+
+.custom-rte-styles blockquote {
+  border-left: 4px solid #d1d5db; /* Tailwind gray-300 */
+  padding-left: 1rem;
+  font-style: italic;
+  color: #6b7280; /* Tailwind gray-500 */
+  margin-bottom: 1rem;
+}
+
+.custom-rte-styles table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1rem;
+}
+
+.custom-rte-styles table th,
+.custom-rte-styles table td {
+  border: 1px solid #d1d5db; /* Tailwind gray-300 */
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.custom-rte-styles table th {
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+  font-weight: bold;
+}
+.custom-rte-styles table tr:nth-child(even) {
+  background-color: #f9fafb; /* Tailwind gray-50 */
+}
+.custom-rte-styles table tr:nth-child(odd) {
+  background-color: #ffffff; /* Tailwind white */
+}
+.custom-rte-styles code {
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+}
+.custom-rte-styles pre {
+  background-color: #f3f4f6; /* Tailwind gray-100 */
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+.custom-rte-styles pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-family: inherit;
+}
+.custom-rte-styles hr {
+  border: 0;
+  border-top: 1px solid #d1d5db; /* Tailwind gray-300 */
+  margin: 1rem 0;
+}
+.custom-rte-styles strong {
+  font-weight: bold;
+}
+.custom-rte-styles em {
+  font-style: italic;
+}
+.custom-rte-styles small {
+  font-size: 0.875rem; /* Tailwind text-sm */
+}
+.custom-rte-styles mark {
+  background-color: #fefcbf; /* Tailwind yellow-200 */
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+}
+.custom-rte-styles sub {
+  vertical-align: sub;
+  font-size: 0.875em; /* Tailwind text-sm */
+}
+.custom-rte-styles sup {
+  vertical-align: super;
+  font-size: 0.875em; /* Tailwind text-sm */
+}
+.custom-rte-styles .align-left {
+  text-align: left;
+}
+.custom-rte-styles .align-center {
+  text-align: center;
+}
+.custom-rte-styles .align-right {
+  text-align: right;
+}
+.custom-rte-styles .align-justify {
+  text-align: justify;
+}
