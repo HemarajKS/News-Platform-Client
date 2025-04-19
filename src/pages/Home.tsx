@@ -3,32 +3,49 @@ import ArticleList from "../components/ArticleList";
 import ArticleFilter from "../components/ArticleFilter";
 import { get } from "../services/api";
 import API_LINKS from "../constants/apiLinks";
+import { useLocation, useSearchParams } from "react-router-dom";
 
 const Home = () => {
-  const [articles, setArticles] = useState([]);
+  const [articles, setArticles] = useState<any>([]);
   const [categories, setCategories] = useState<any>([]);
   const [authors, setAuthors] = useState<any>([]);
-  const [filteredArticles, setFilteredArticles] = useState([]);
+  const [tags, setTags] = useState<any>([]);
+  const [filteredArticles, setFilteredArticles] = useState<any>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const response = await fetch("/api/articles");
-        const data = await response.json();
-        setArticles(data);
-        setFilteredArticles(data);
-      } catch (error) {
-        console.error("Error fetching articles:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const [searchParams] = useSearchParams();
 
-    fetchArticles();
+  useEffect(() => {
     fetchCategories();
     fetchAuthors();
+    fetchTags();
   }, []);
+
+  useEffect(() => {
+    const categoryId = searchParams.get("categoryId");
+    const authorId = searchParams.get("authorId");
+    const tag = searchParams.get("tag");
+    const articleType = searchParams.get("articleType");
+
+    const queryParams = new URLSearchParams();
+
+    if (categoryId) queryParams.append("category", categoryId);
+    if (authorId) queryParams.append("author", authorId);
+    if (tag) queryParams.append("tag", tag);
+    if (articleType) queryParams.append("articleType", articleType);
+
+    fetchArticles(queryParams.toString());
+  }, [searchParams]);
+
+  const fetchArticles = async (query: string) => {
+    setLoading(true);
+    const response = (await get(
+      `${API_LINKS.ARTICLES.GET_FILTERED}?${query}`
+    )) as { data: any[] };
+    setArticles(response.data);
+    setFilteredArticles(response.data);
+    setLoading(false);
+  };
 
   const fetchCategories = async () => {
     const response = (await get(API_LINKS.CATEGORIES.GET_ALL)) as {
@@ -44,6 +61,13 @@ const Home = () => {
     setAuthors(response.data);
   };
 
+  const fetchTags = async () => {
+    const response = (await get(API_LINKS.TAGS.GET_ALL)) as {
+      data: any[];
+    };
+    setTags(response.data);
+  };
+
   if (loading) {
     <div className="flex justify-center items-center h-screen">
       <p className="text-lg font-semibold">Loading articles...</p>
@@ -57,7 +81,7 @@ const Home = () => {
         <ArticleFilter
           categories={categories || []}
           authors={authors || []}
-          tags={[]}
+          tags={tags || []}
         />
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

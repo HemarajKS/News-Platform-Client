@@ -1,6 +1,7 @@
 const API_LINKS = {
   ARTICLES: {
     GET_ALL: "/articles",
+    GET_FILTERED: "/articles/filter",
     GET_EACH: (id: string) => `/articles/${id}`,
   },
   CATEGORIES: {
@@ -9,6 +10,10 @@ const API_LINKS = {
 
   AUTHORS: {
     GET_ALL: "/authors",
+  },
+
+  TAGS: {
+    GET_ALL: "/tags",
   },
 };
 

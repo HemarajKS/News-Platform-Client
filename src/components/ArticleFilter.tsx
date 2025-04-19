@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 interface ArticleFilterProps {
-  categories: { categoryId: string; categoryName: string }[];
-  authors: { authorId: string; authorName: string }[];
-  tags: string[];
+  categories: { _id: string; categoryName: string }[];
+  authors: { _id: string; authorName: string }[];
+  tags: { _id: string; name: string }[];
 }
 
 const ArticleFilter: React.FC<ArticleFilterProps> = ({
@@ -87,7 +87,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
               >
                 <option value="">All Categories</option>
                 {categories.map((category) => (
-                  <option key={category.categoryId} value={category.categoryId}>
+                  <option key={category._id} value={category._id}>
                     {category.categoryName}
                   </option>
                 ))}
@@ -110,7 +110,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
               >
                 <option value="">All Authors</option>
                 {authors.map((author) => (
-                  <option key={author.authorId} value={author.authorId}>
+                  <option key={author._id} value={author._id}>
                     {author.authorName}
                   </option>
                 ))}
@@ -156,8 +156,8 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
               >
                 <option value="">All Tags</option>
                 {tags.map((tag) => (
-                  <option key={tag} value={tag}>
-                    {tag}
+                  <option key={tag._id} value={tag._id}>
+                    {tag.name}
                   </option>
                 ))}
               </select>
@@ -184,7 +184,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
           >
             <option value="">All Categories</option>
             {categories.map((category) => (
-              <option key={category.categoryId} value={category.categoryId}>
+              <option key={category._id} value={category._id}>
                 {category.categoryName}
               </option>
             ))}
@@ -207,7 +207,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
           >
             <option value="">All Authors</option>
             {authors.map((author) => (
-              <option key={author.authorId} value={author.authorId}>
+              <option key={author._id} value={author._id}>
                 {author.authorName}
               </option>
             ))}
@@ -253,8 +253,8 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
           >
             <option value="">All Tags</option>
             {tags.map((tag) => (
-              <option key={tag} value={tag}>
-                {tag}
+              <option key={tag._id} value={tag.name}>
+                {tag.name}
               </option>
             ))}
           </select>
