@@ -51,6 +51,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
       <button
         className=" bg-blue-500 text-white p-3 rounded-full shadow-lg md:hidden"
         onClick={() => setIsBottomSheetOpen(true)}
+        data-testid="open-filters-button"
       >
         Filters
       </button>
@@ -64,6 +65,7 @@ const ArticleFilter: React.FC<ArticleFilterProps> = ({
               <button
                 className="text-gray-500"
                 onClick={() => setIsBottomSheetOpen(false)}
+                data-testid="close-filters-button"
               >
                 Close
               </button>
