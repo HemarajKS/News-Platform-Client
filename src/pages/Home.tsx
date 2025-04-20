@@ -5,6 +5,7 @@ import { get } from "../services/api";
 import API_LINKS from "../constants/apiLinks";
 import { useSearchParams } from "react-router-dom";
 import PullToRefresh from "react-pull-to-refresh";
+import NoDataFound from "../components/NoDataFound";
 
 const Home = () => {
   const [articles, setArticles] = useState<any>([]);
@@ -139,7 +140,11 @@ const Home = () => {
           />
         </div>
         <div>
-          <ArticleList articles={articles} />
+          {articles.length > 0 && !loading ? (
+            <ArticleList articles={articles} />
+          ) : (
+            <NoDataFound />
+          )}
         </div>
         {page < totalPages && (
           <div className="flex justify-center mt-6">
