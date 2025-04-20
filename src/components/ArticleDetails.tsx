@@ -24,6 +24,11 @@ interface Article {
 
 const ArticleDetails: React.FC<{ article: Article }> = ({ article }) => {
   const navigate = useNavigate();
+  const fallbackImage =
+    "https://salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png";
+
+  const fallbackImageSquare =
+    "https://upload.wikimedia.org/wikipedia/commons/a/a3/Image-not-found.png";
   return (
     <div className="article-details max-w-6xl mx-auto p-6 bg-white shadow-md rounded-lg my-6">
       <h1 className="article-title text-3xl font-bold text-gray-800 mb-4">
@@ -34,6 +39,9 @@ const ArticleDetails: React.FC<{ article: Article }> = ({ article }) => {
         className="article-hero w-full h-auto rounded-lg mb-6 aspect-[16/9] object-cover"
         src={article.hero}
         alt={article.title}
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = fallbackImage;
+        }}
       />
       <div
         className="relative group w-max"
@@ -52,6 +60,9 @@ const ArticleDetails: React.FC<{ article: Article }> = ({ article }) => {
               src={article.author.authorImage}
               alt={article.author.authorName}
               className="w-12 h-12 rounded-full mr-3"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = fallbackImageSquare;
+              }}
             />
             <div>
               <p className="text-sm font-bold text-gray-800">

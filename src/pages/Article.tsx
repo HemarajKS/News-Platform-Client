@@ -31,7 +31,11 @@ const Article = () => {
     return <div>Loading...</div>;
   }
 
-  return <div>{article && <ArticleDetails article={article} />}</div>;
+  return (
+    <div>
+      <ArticleDetails article={article} />
+    </div>
+  );
 };
 
 export default Article;

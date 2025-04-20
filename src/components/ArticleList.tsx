@@ -15,7 +15,7 @@ interface Article {
 
 const ArticleList: React.FC<{ articles: Article[] }> = ({ articles }) => {
   const fallbackImage =
-    "https://sdmntprnorthcentralus.oaiusercontent.com/files/00000000-3010-622f-8559-adf8ad49eda1/raw?se=2025-04-19T16%3A46%3A05Z&sp=r&sv=2024-08-04&sr=b&scid=70ba4fed-f112-5f9d-86ef-14bfb9d1858e&skoid=de76bc29-7017-43d4-8d90-7a49512bae0f&sktid=a48cca56-e6da-484e-a814-9c849652bcb3&skt=2025-04-19T11%3A31%3A53Z&ske=2025-04-20T11%3A31%3A53Z&sks=b&skv=2024-08-04&sig=LRE28CWiewIwYFb3s9Ism0zTgLVN8Wx4RxywnW97kgk%3D";
+    "https://salonlfc.com/wp-content/uploads/2018/01/image-not-found-1-scaled-1150x647.png";
   return (
     <div className="flex flex-col gap-4">
       {articles.map((article) => (
