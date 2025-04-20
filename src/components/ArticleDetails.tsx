@@ -98,7 +98,8 @@ const ArticleDetails: React.FC<{ article: Article }> = ({ article }) => {
         />
       )}
       <p className="article-published text-sm text-gray-500 mb-2">
-        Published on: {new Date(article.published).toLocaleDateString()}
+        Published on: {new Date(article.published).toLocaleDateString()} at{" "}
+        {new Date(article.published).toLocaleTimeString()}
       </p>
 
       <p className="article-category text-sm text-gray-500 mb-2">
