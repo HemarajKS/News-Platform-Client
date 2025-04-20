@@ -13,23 +13,26 @@ This is the client-side application for the News Platform project. It is built u
 To get started with the client application, follow these steps:
 
 1. **Clone the Repository**:
+
    ```bash
    git clone <repository-url>
    cd news-platform/client
    ```
 
 2. **Install Dependencies**:
+
    ```bash
    npm install
    ```
 
 3. **Run the Application**:
+
    ```bash
    npm start
    ```
 
 4. **Open in Browser**:
-   Navigate to `http://localhost:3000` to view the application.
+   Navigate to `http://localhost:3001` to view the application.
 
 ## Folder Structure
 
