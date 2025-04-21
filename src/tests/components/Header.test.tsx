@@ -20,8 +20,19 @@ describe("Header Component", () => {
         <Header />
       </BrowserRouter>
     );
-    const homeLink = screen.getByText("Home");
+    const homeLink = screen.getByText("Home-Pagination");
     expect(homeLink).toBeInTheDocument();
     expect(homeLink.getAttribute("href")).toBe("/");
+  });
+
+  it("renders the navigation link to Home- Fronted filtered", () => {
+    render(
+      <BrowserRouter>
+        <Header />
+      </BrowserRouter>
+    );
+    const homeLink = screen.getByText("Home-Frontend Filter");
+    expect(homeLink).toBeInTheDocument();
+    expect(homeLink.getAttribute("href")).toBe("/home-frontend-filter");
   });
 });
