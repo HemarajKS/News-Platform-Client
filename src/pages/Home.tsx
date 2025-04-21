@@ -45,40 +45,57 @@ const Home = () => {
 
   const fetchArticles = async (query: string, page: number) => {
     setLoading(true);
-    const response = (await get(
-      `${API_LINKS.ARTICLES.GET_FILTERED}?${query}&page=${page}&pageSize=${pageSize}`
-    )) as { data: { articles: any[]; totalPages: number } };
-    if (page === 1) {
-      setArticles(response.data.articles); // Replace articles on the first page
-    } else {
-      setArticles((prevArticles: any) => [
-        ...prevArticles,
-        ...response.data.articles,
-      ]); // Append articles for subsequent pages
+    try {
+      const response = (await get(
+        `${API_LINKS.ARTICLES.GET_FILTERED}?${query}&page=${page}&pageSize=${pageSize}`
+      )) as { data: { articles: any[]; totalPages: number } };
+      if (page === 1) {
+        setArticles(response.data.articles); // Replace articles on the first page
+      } else {
+        setArticles((prevArticles: any) => [
+          ...prevArticles,
+          ...response.data.articles,
+        ]); // Append articles for subsequent pages
+      }
+      setTotalPages(response.data.totalPages); // Update total pages
+    } catch (error) {
+      console.error("Error fetching articles:", error);
     }
-    setTotalPages(response.data.totalPages); // Update total pages
+
     setLoading(false);
   };
 
   const fetchCategories = async () => {
-    const response = (await get(API_LINKS.CATEGORIES.GET_ALL)) as {
-      data: any[];
-    };
-    setCategories(response.data);
+    try {
+      const response = (await get(API_LINKS.CATEGORIES.GET_ALL)) as {
+        data: any[];
+      };
+      setCategories(response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
   };
 
   const fetchAuthors = async () => {
-    const response = (await get(API_LINKS.AUTHORS.GET_ALL)) as {
-      data: any[];
-    };
-    setAuthors(response.data);
+    try {
+      const response = (await get(API_LINKS.AUTHORS.GET_ALL)) as {
+        data: any[];
+      };
+      setAuthors(response.data);
+    } catch (error) {
+      console.error("Error fetching authors:", error);
+    }
   };
 
   const fetchTags = async () => {
-    const response = (await get(API_LINKS.TAGS.GET_ALL)) as {
-      data: any[];
-    };
-    setTags(response.data);
+    try {
+      const response = (await get(API_LINKS.TAGS.GET_ALL)) as {
+        data: any[];
+      };
+      setTags(response.data);
+    } catch (error) {
+      console.error("Error fetching tags:", error);
+    }
   };
 
   if (loading && page === 1) {
