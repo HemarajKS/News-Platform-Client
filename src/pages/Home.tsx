@@ -49,15 +49,8 @@ const Home = () => {
       const response = (await get(
         `${API_LINKS.ARTICLES.GET_FILTERED}?${query}&page=${page}&pageSize=${pageSize}`
       )) as { data: { articles: any[]; totalPages: number } };
-      if (page === 1) {
-        setArticles(response.data.articles); // Replace articles on the first page
-      } else {
-        setArticles((prevArticles: any) => [
-          ...prevArticles,
-          ...response.data.articles,
-        ]); // Append articles for subsequent pages
-      }
-      setTotalPages(response.data.totalPages); // Update total pages
+      setArticles(response.data.articles);
+      setTotalPages(response.data.totalPages);
     } catch (error) {
       console.error("Error fetching articles:", error);
     }
@@ -98,6 +91,23 @@ const Home = () => {
     }
   };
 
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+    const categoryId = searchParams.get("categoryId");
+    const authorId = searchParams.get("authorId");
+    const tag = searchParams.get("tag");
+    const articleType = searchParams.get("articleType");
+
+    const queryParams = new URLSearchParams();
+
+    if (categoryId) queryParams.append("category", categoryId);
+    if (authorId) queryParams.append("author", authorId);
+    if (tag) queryParams.append("tag", tag);
+    if (articleType) queryParams.append("articleType", articleType);
+
+    fetchArticles(queryParams.toString(), newPage);
+  };
+
   if (loading && page === 1) {
     return (
       <div className="flex justify-center items-center h-screen">
@@ -105,25 +115,6 @@ const Home = () => {
       </div>
     );
   }
-
-  const loadMoreArticles = () => {
-    if (page < totalPages) {
-      setPage((prevPage) => prevPage + 1);
-      const categoryId = searchParams.get("categoryId");
-      const authorId = searchParams.get("authorId");
-      const tag = searchParams.get("tag");
-      const articleType = searchParams.get("articleType");
-
-      const queryParams = new URLSearchParams();
-
-      if (categoryId) queryParams.append("category", categoryId);
-      if (authorId) queryParams.append("author", authorId);
-      if (tag) queryParams.append("tag", tag);
-      if (articleType) queryParams.append("articleType", articleType);
-
-      fetchArticles(queryParams.toString(), page + 1);
-    }
-  };
 
   const handleRefresh = () => {
     return new Promise<void>((resolve) => {
@@ -162,16 +153,21 @@ const Home = () => {
             <NoDataFound />
           )}
         </div>
-        {page < totalPages && (
-          <div className="flex justify-center mt-6">
+        <div className="flex justify-center mt-6">
+          {Array.from({ length: totalPages }, (_, index) => (
             <button
-              onClick={loadMoreArticles}
-              className="px-6 py-2 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition"
+              key={index}
+              onClick={() => handlePageChange(index + 1)}
+              className={`px-4 py-2 mx-1 ${
+                page === index + 1
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+              } font-semibold rounded-lg hover:bg-blue-600 transition`}
             >
-              Load More
+              {index + 1}
             </button>
-          </div>
-        )}
+          ))}
+        </div>
       </div>
     </PullToRefresh>
   );
